@@ -3,12 +3,12 @@ import { z } from "zod";
 import { TRPCError } from "@trpc/server";
 export const userRouter = router({
   all: publicProcedure
-    .input(z.object({ id: z.string() }))
-    .query(async ({ input: { id } }) => {
+    .input(z.object({ userId: z.string() }))
+    .query(async ({ input: { userId } }) => {
       const users = await prisma?.user.findMany({
         where: {
           id: {
-            not: id,
+            not: userId,
           },
         },
         orderBy: {
@@ -18,14 +18,13 @@ export const userRouter = router({
       });
       return users;
     }),
-
   list: publicProcedure
-    .input(z.object({ id: z.string() }))
-    .query(async ({ input: { id } }) => {
+    .input(z.object({ userId: z.string() }))
+    .query(async ({ input: { userId } }) => {
       const list = await prisma?.user.findFirst({
         where: {
           id: {
-            equals: id,
+            equals: userId,
           },
         },
         include: {

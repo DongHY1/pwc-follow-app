@@ -5,24 +5,35 @@ const Profile: NextPage = () => {
   // const { data: users } = trpc.useQuery(["user/all"], {
   //   enabled: isAuthenticated,
   // });
-  // const { data: list } = trpc.useQuery(["user/list"], {
-  //   enabled: isAuthenticated,
-  // });
-  // const { mutate: followMutate } = trpc.useMutation(["user/subscribe"], {
-  //   onSuccess: () => {},
-  // });
-  // const { mutate: unfollowMutate } = trpc.useMutation(["user/unsubscribe"], {
-  //   onSuccess: () => {},
-  // });
-  // const hasFollow = (id: string): boolean => {
-  //   let flag = false;
-  //   list?.followinglist?.map((item: any) => {
-  //     if (item.followingId === id) {
-  //       flag = true;
-  //     }
-  //   });
-  //   return flag;
-  // };
+
+  // 这里userid要从zustand仓库里去拿
+  const { data: users, refetch: refetchUsers } = trpc.user.all.useQuery({
+    userId: "df553dcd-16d1-46af-a383-9e93d17ff834",
+  });
+  const { data: lists, refetch: refetchLists } = trpc.user.list.useQuery({
+    userId: "df553dcd-16d1-46af-a383-9e93d17ff834",
+  });
+  const { mutate: followMutate } = trpc.user.follow.useMutation({
+    onSuccess: () => {
+      refetchUsers();
+      refetchLists();
+    },
+  });
+  const { mutate: unFollowMutate } = trpc.user.unfollow.useMutation({
+    onSuccess: () => {
+      refetchUsers();
+      refetchLists();
+    },
+  });
+  const hasFollow = (id: string): boolean => {
+    let flag = false;
+    lists?.followinglist?.map((item: any) => {
+      if (item.followingId === id) {
+        flag = true;
+      }
+    });
+    return flag;
+  };
   return (
     <div className="flex flex-wrap justify-between">
       {/* Following List */}
@@ -37,7 +48,7 @@ const Profile: NextPage = () => {
             role="list"
             className="divide-y divide-gray-200 dark:divide-gray-700"
           >
-            {list?.followinglist?.map((user) => (
+            {lists?.followinglist?.map((user) => (
               <li className="py-3 sm:py-4" key={user.following.id}>
                 <div className="flex items-center space-x-4">
                   <div className="flex-shrink-0">
@@ -54,8 +65,15 @@ const Profile: NextPage = () => {
                   <Follow
                     id={user.following.id}
                     hasFollow={hasFollow(user.following.id)}
-                    unFollowMutate={unfollowMutate}
-                    followMutate={followMutate}
+                    unFollowMutate={() =>
+                      unFollowMutate({
+                        userId: "1",
+                        unFollowId: user.following.id,
+                      })
+                    }
+                    followMutate={() =>
+                      followMutate({ userId: "1", followId: user.following.id })
+                    }
                   />
                 </div>
               </li>
@@ -92,8 +110,12 @@ const Profile: NextPage = () => {
                   <Follow
                     id={user.id}
                     hasFollow={hasFollow(user.id)}
-                    unFollowMutate={unfollowMutate}
-                    followMutate={followMutate}
+                    unFollowMutate={() =>
+                      unFollowMutate({ userId: "1", unFollowId: user.id })
+                    }
+                    followMutate={() =>
+                      followMutate({ userId: "1", followId: user.id })
+                    }
                   />
                 </div>
               </li>
@@ -113,7 +135,7 @@ const Profile: NextPage = () => {
             role="list"
             className="divide-y divide-gray-200 dark:divide-gray-700"
           >
-            {list?.followerslist?.map((user) => (
+            {lists?.followerslist?.map((user) => (
               <li className="py-3 sm:py-4" key={user.follower.id}>
                 <div className="flex items-center space-x-4">
                   <div className="flex-shrink-0">
