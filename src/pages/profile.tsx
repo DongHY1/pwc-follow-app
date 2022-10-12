@@ -2,16 +2,14 @@ import Follow from "./components/Follow";
 import type { NextPage } from "next";
 import { trpc } from "../utils/trpc";
 const Profile: NextPage = () => {
-  // const { data: users } = trpc.useQuery(["user/all"], {
-  //   enabled: isAuthenticated,
-  // });
-
+  const USERID = "df553dcd-16d1-46af-a383-9e93d17ff834";
+  const FOLLOWID = "b0943e9a-6495-4dc9-b2b1-17726a7a69c9";
   // 这里userid要从zustand仓库里去拿
   const { data: users, refetch: refetchUsers } = trpc.user.all.useQuery({
-    userId: "df553dcd-16d1-46af-a383-9e93d17ff834",
+    userId: USERID,
   });
   const { data: lists, refetch: refetchLists } = trpc.user.list.useQuery({
-    userId: "df553dcd-16d1-46af-a383-9e93d17ff834",
+    userId: USERID,
   });
   const { mutate: followMutate } = trpc.user.follow.useMutation({
     onSuccess: () => {
@@ -67,12 +65,12 @@ const Profile: NextPage = () => {
                     hasFollow={hasFollow(user.following.id)}
                     unFollowMutate={() =>
                       unFollowMutate({
-                        userId: "1",
-                        unFollowId: user.following.id,
+                        userId: USERID,
+                        unFollowId: FOLLOWID,
                       })
                     }
                     followMutate={() =>
-                      followMutate({ userId: "1", followId: user.following.id })
+                      followMutate({ userId: USERID, followId: FOLLOWID })
                     }
                   />
                 </div>
@@ -111,10 +109,10 @@ const Profile: NextPage = () => {
                     id={user.id}
                     hasFollow={hasFollow(user.id)}
                     unFollowMutate={() =>
-                      unFollowMutate({ userId: "1", unFollowId: user.id })
+                      unFollowMutate({ userId: USERID, unFollowId: FOLLOWID })
                     }
                     followMutate={() =>
-                      followMutate({ userId: "1", followId: user.id })
+                      followMutate({ userId: USERID, followId: FOLLOWID })
                     }
                   />
                 </div>
