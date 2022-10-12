@@ -1,10 +1,57 @@
 import Link from "next/link";
 import { FormStatus } from "../../common/enum";
+import { useForm, SubmitHandler } from "react-hook-form";
+import { trpc } from "../../utils/trpc";
+import { useRouter } from "next/router";
 interface FormProps {
   status: FormStatus;
 }
+type Inputs = {
+  name: string;
+  email: string;
+  password: string;
+};
 const Form = (props: FormProps) => {
+  const router = useRouter();
   const { status } = props;
+  const { register, handleSubmit } = useForm<Inputs>();
+  const { data: loginData, mutate: loginMutate } = trpc.auth.login.useMutation({
+    onSuccess: () => {
+      console.log("LOGIN SUCCESS", loginData);
+      router.push("/");
+    },
+  });
+  const { data: signData, mutate: signMutate } = trpc.auth.signup.useMutation({
+    onSuccess: () => {
+      console.log("SIGN SUCCESS", signData);
+      router.push("/");
+    },
+  });
+  const handleLoginSubmit = (email: string, password: string) => {
+    loginMutate({
+      email,
+      password,
+    });
+  };
+  const handleRegisterSubmit = (
+    name: string,
+    email: string,
+    password: string
+  ) => {
+    signMutate({
+      name,
+      email,
+      password,
+    });
+  };
+  const onSubmit: SubmitHandler<Inputs> = ({ name, email, password }) => {
+    if (status === FormStatus.LOGIN) {
+      handleLoginSubmit(email, password);
+    } else if (status === FormStatus.REGISTER) {
+      handleRegisterSubmit(name, email, password);
+    }
+  };
+
   return (
     <section className="bg-gray-50 dark:bg-gray-900">
       <div className="mx-auto flex flex-col items-center justify-center px-6 py-8 md:h-screen lg:py-0">
@@ -15,7 +62,10 @@ const Form = (props: FormProps) => {
                 status === FormStatus.LOGIN ? "Sign in" : "Sign Up"
               } to your account`}
             </h1>
-            <form className="space-y-4 md:space-y-6">
+            <form
+              className="space-y-4 md:space-y-6"
+              onSubmit={handleSubmit(onSubmit)}
+            >
               {status === FormStatus.REGISTER && (
                 <div>
                   <div className="mb-2 block text-sm font-medium text-gray-900 dark:text-white">
@@ -23,8 +73,8 @@ const Form = (props: FormProps) => {
                   </div>
                   <input
                     id="name"
-                    type="name"
-                    name="name"
+                    type="text"
+                    {...register("name", { required: true })}
                     className="focus:ring-primary-600 focus:border-primary-600 block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-gray-900 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-blue-500 dark:focus:ring-blue-500 sm:text-sm"
                     placeholder="David"
                   />
@@ -37,7 +87,7 @@ const Form = (props: FormProps) => {
                 <input
                   id="email"
                   type="email"
-                  name="email"
+                  {...register("email", { required: true })}
                   className="focus:ring-primary-600 focus:border-primary-600 block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-gray-900 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-blue-500 dark:focus:ring-blue-500 sm:text-sm"
                   placeholder="name@company.com"
                 />
@@ -49,7 +99,7 @@ const Form = (props: FormProps) => {
                 <input
                   id="password"
                   type="password"
-                  name="password"
+                  {...register("password", { required: true })}
                   placeholder="••••••••"
                   className="focus:ring-primary-600 focus:border-primary-600 block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-gray-900 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-blue-500 dark:focus:ring-blue-500 sm:text-sm"
                 />

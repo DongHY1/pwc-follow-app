@@ -1,21 +1,9 @@
 import type { NextPage } from "next";
 import Head from "next/head";
 import Link from "next/link";
-import { trpc } from "../utils/trpc";
 import List from "./components/List";
-import { Navbar } from "./components/Navbar";
 
 const Home: NextPage = () => {
-  const { data, mutate, isSuccess } = trpc.auth.login.useMutation();
-  const handleLoginClick = () => {
-    mutate({
-      email: "haoyudong@test.com",
-      password: "dhywj123",
-    });
-    if (isSuccess) {
-      console.log("login success", data);
-    }
-  };
   return (
     <>
       <Head>
