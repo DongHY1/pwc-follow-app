@@ -1,9 +1,11 @@
 import type { NextPage } from "next";
 import Head from "next/head";
+import Link from "next/link";
 import { trpc } from "../utils/trpc";
+import List from "./components/List";
+import { Navbar } from "./components/Navbar";
 
 const Home: NextPage = () => {
-  const hello = trpc.example.hello.useQuery({ text: "from tRPC" });
   const { data, mutate, isSuccess } = trpc.auth.login.useMutation();
   const handleLoginClick = () => {
     mutate({
@@ -20,49 +22,50 @@ const Home: NextPage = () => {
         <title>PWC Follow App</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
+      <header>
+        <div className="mx-auto max-w-4xl py-16 px-14 sm:px-6 lg:px-8">
+          <h1 className="bg-gradient-to-br from-purple-400 to-gray-400 bg-clip-text text-center font-sans text-4xl font-bold leading-snug text-transparent md:text-5xl lg:text-8xl">
+            PWC FOLLOW APP
+          </h1>
+          <div className="max-w-l mx-auto">
+            <p className="mt-5 text-center text-xl text-gray-500 lg:text-3xl ">
+              Next.JS + Express + TRPC + Prisma ORM + PostgreSQL
+            </p>
+          </div>
+          <div className="align-center flex justify-center">
+            <ul className="mt-10 max-w-md list-inside space-y-1 text-gray-500 dark:text-gray-400">
+              <List text="👉 User Login and User Follow API" />
+              <List text="🧙‍♂️ E2E Typesafety with tRPC" />
+              <List text="🔐 E2E testing with Cypress" />
+              <List text="🛠 FullStack React with Next.js " />
+              <List text="📱 Responsive Design with Tailwind " />
+              <List text="📚 Database with Prisma" />
+              <List text="🚢 Docker It !" />
+            </ul>
+          </div>
 
-      <main className="container mx-auto flex min-h-screen flex-col items-center justify-center p-4">
-        <h1 className="text-5xl font-extrabold leading-normal text-gray-700 md:text-[5rem]">
-          Create <span className="text-purple-300">T3</span> App
-        </h1>
-        <button onClick={handleLoginClick}>Login</button>
-        <p className="text-2xl text-gray-700">This stack uses:</p>
-        <div className="mt-3 grid gap-3 pt-3 text-center md:grid-cols-2 lg:w-2/3">
-          <TechnologyCard
-            name="NextJS"
-            description="The React framework for production"
-            documentation="https://nextjs.org/"
-          />
-          <TechnologyCard
-            name="TypeScript"
-            description="Strongly typed programming language that builds on JavaScript, giving you better tooling at any scale"
-            documentation="https://www.typescriptlang.org/"
-          />
-          <TechnologyCard
-            name="TailwindCSS"
-            description="Rapidly build modern websites without ever leaving your HTML"
-            documentation="https://tailwindcss.com/"
-          />
-          <TechnologyCard
-            name="tRPC"
-            description="End-to-end typesafe APIs made easy"
-            documentation="https://trpc.io/"
-          />
-          <TechnologyCard
-            name="Next-Auth"
-            description="Authentication for Next.js"
-            documentation="https://next-auth.js.org/"
-          />
-          <TechnologyCard
-            name="Prisma"
-            description="Build data-driven JavaScript & TypeScript apps in less time"
-            documentation="https://www.prisma.io/docs/"
-          />
+          <div className="mx-auto mt-20 flex w-full items-center justify-center">
+            <a
+              href="https://github.com/DongHY1/pwc-follow"
+              className="rounded border border-indigo-500 bg-indigo-600 py-2 px-4 font-sans font-medium text-white hover:bg-indigo-700"
+            >
+              GitHub
+            </a>
+            <span className="mx-2">or</span>
+
+            <Link href="/signup" passHref>
+              <button className="rounded border py-2 px-4 font-sans font-medium ">
+                Sign up
+              </button>
+            </Link>
+            <Link href="/profile" passHref>
+              <button className="rounded border py-2 px-4 font-sans font-medium ">
+                Profile
+              </button>
+            </Link>
+          </div>
         </div>
-        <div className="flex w-full items-center justify-center pt-6 text-2xl text-blue-500">
-          {hello.data ? <p>{hello.data.greeting}</p> : <p>Loading..</p>}
-        </div>
-      </main>
+      </header>
     </>
   );
 };
