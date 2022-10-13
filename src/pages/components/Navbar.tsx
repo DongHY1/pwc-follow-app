@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import Link from "next/link";
-export const Navbar = () => {
+const Navbar = () => {
   const [isHidden, setIsHidden] = useState(true);
   return (
     <nav className="rounded border-gray-200 bg-white px-2 py-2.5 dark:bg-gray-900 sm:px-4">
@@ -8,7 +8,7 @@ export const Navbar = () => {
         <a href="https://flowbite.com/" className="flex items-center">
           <div className="mr-3 h-6 sm:h-9"></div>
           <Link href="/" passHref>
-            <button className="self-center whitespace-nowrap text-2xl text-xl font-semibold dark:text-white">
+            <button className="self-center whitespace-nowrap text-xl font-semibold dark:text-white">
               Follow
             </button>
           </Link>
@@ -78,3 +78,4 @@ export const Navbar = () => {
     </nav>
   );
 };
+export default Navbar;

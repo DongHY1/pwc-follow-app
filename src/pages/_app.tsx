@@ -2,7 +2,7 @@
 import "../styles/globals.css";
 import type { AppType } from "next/app";
 import { trpc } from "../utils/trpc";
-import { Navbar } from "./components/Navbar";
+import Navbar from "./components/Navbar";
 
 const MyApp: AppType = ({ Component, pageProps }) => {
   return (
