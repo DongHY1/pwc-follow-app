@@ -7,7 +7,7 @@ PWC Follow App</a>
 </p>
 
 <p align='center'>
-<a href='https://follow.szuhy.xyz'/>👉 Goto App</a>
+<a href='https://pwcfollow.szuhy.xyz'/>👉 Goto App</a>
 </p>
 <br>
 
