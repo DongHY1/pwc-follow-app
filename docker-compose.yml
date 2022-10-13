@@ -1,8 +1,22 @@
-version: "3"
+# version: "3"
+# services:
+#   pwc-db:
+#     image: postgres
+#     container_name: pwc-db2
+#     ports:
+#       - "5432:5432"
+#     restart: always
+#     env_file:
+#       - ./.env-db
+#     volumes:
+#       - postgres-db:/var/lib/postgresql/data
+# volumes:
+#   postgres-db:
+version: "3.9"
 services:
-  pwc-db:
+  pwc-database:
     image: postgres
-    container_name: pwc-db2
+    container_name: pwc-database
     ports:
       - "5432:5432"
     restart: always
@@ -10,5 +24,21 @@ services:
       - ./.env-db
     volumes:
       - postgres-db:/var/lib/postgresql/data
+  pwc-app:
+    platform: "linux/amd64"
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        NEXT_PUBLIC_CLIENTVAR: "clientvar"
+    working_dir: /app
+    container_name: pwc-app
+    depends_on:
+      - pwc-database
+    ports:
+      - "3000:3000"
+    image: t3-app
+    environment:
+      - DATABASE_URL=postgresql://postgres:postgres@localhost:5432/followapp?schema=public
 volumes:
   postgres-db:
