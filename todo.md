@@ -1,0 +1,3 @@
+- 使用 zustand 保存 user 信息
+- cokkie 添加 session token，进入页面之前会首先验证 session token
+- 登录注册后跳转回首页
