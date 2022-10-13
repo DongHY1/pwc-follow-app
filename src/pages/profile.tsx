@@ -2,15 +2,8 @@ import Follow from "./components/Follow";
 import type { NextPage } from "next";
 import { trpc } from "../utils/trpc";
 const Profile: NextPage = () => {
-  const USERID = "df553dcd-16d1-46af-a383-9e93d17ff834";
-  const FOLLOWID = "b0943e9a-6495-4dc9-b2b1-17726a7a69c9";
-  // 这里userid要从zustand仓库里去拿
-  const { data: users, refetch: refetchUsers } = trpc.user.all.useQuery({
-    userId: USERID,
-  });
-  const { data: lists, refetch: refetchLists } = trpc.user.list.useQuery({
-    userId: USERID,
-  });
+  const { data: users, refetch: refetchUsers } = trpc.user.all.useQuery();
+  const { data: lists, refetch: refetchLists } = trpc.user.list.useQuery();
   const { mutate: followMutate } = trpc.user.follow.useMutation({
     onSuccess: () => {
       refetchUsers();
@@ -25,7 +18,7 @@ const Profile: NextPage = () => {
   });
   const hasFollow = (id: string): boolean => {
     let flag = false;
-    lists?.followinglist?.map((item: any) => {
+    lists?.followinglist?.map((item) => {
       if (item.followingId === id) {
         flag = true;
       }
@@ -54,7 +47,7 @@ const Profile: NextPage = () => {
                   </div>
                   <div className="min-w-0 flex-1">
                     <p className="text-m truncate font-medium text-gray-900 dark:text-white">
-                      {user.following.name}
+                      {user.following.username}
                     </p>
                     <p className="text-m truncate text-gray-500 dark:text-gray-400">
                       Email: {user.following.email}
@@ -65,12 +58,11 @@ const Profile: NextPage = () => {
                     hasFollow={hasFollow(user.following.id)}
                     unFollowMutate={() =>
                       unFollowMutate({
-                        userId: USERID,
-                        unFollowId: FOLLOWID,
+                        unFollowId: user.following.id,
                       })
                     }
                     followMutate={() =>
-                      followMutate({ userId: USERID, followId: FOLLOWID })
+                      followMutate({ followId: user.following.id })
                     }
                   />
                 </div>
@@ -99,7 +91,7 @@ const Profile: NextPage = () => {
                   </div>
                   <div className="min-w-0 flex-1">
                     <p className="text-m truncate font-medium text-gray-900 dark:text-white">
-                      {user.name}
+                      {user.username}
                     </p>
                     <p className="text-m truncate text-gray-500 dark:text-gray-400">
                       Email: {user.email}
@@ -109,11 +101,9 @@ const Profile: NextPage = () => {
                     id={user.id}
                     hasFollow={hasFollow(user.id)}
                     unFollowMutate={() =>
-                      unFollowMutate({ userId: USERID, unFollowId: FOLLOWID })
+                      unFollowMutate({ unFollowId: user.id })
                     }
-                    followMutate={() =>
-                      followMutate({ userId: USERID, followId: FOLLOWID })
-                    }
+                    followMutate={() => followMutate({ followId: user.id })}
                   />
                 </div>
               </li>
@@ -141,7 +131,7 @@ const Profile: NextPage = () => {
                   </div>
                   <div className="min-w-0 flex-1">
                     <p className="text-m truncate font-medium text-gray-900 dark:text-white">
-                      {user.follower.name}
+                      {user.follower.username}
                     </p>
                     <p className="text-m truncate text-gray-500 dark:text-gray-400">
                       Email: {user.follower.email}

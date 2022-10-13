@@ -3,57 +3,53 @@ import { z } from "zod";
 import { TRPCError } from "@trpc/server";
 // 下方的UserID需要更换为ctx session内容
 export const userRouter = router({
-  all: protectedProcedure
-    .input(z.object({ userId: z.string() }))
-    .query(async ({ input: { userId } }) => {
-      const users = await prisma?.user.findMany({
-        where: {
-          id: {
-            not: userId,
+  all: protectedProcedure.query(async ({ ctx: { session } }) => {
+    const users = await prisma?.user.findMany({
+      where: {
+        id: {
+          not: session.user.userId,
+        },
+      },
+      orderBy: {
+        createdAt: "desc",
+      },
+      include: { followers: true, followings: true },
+    });
+    return users;
+  }),
+  list: protectedProcedure.query(async ({ ctx: { session } }) => {
+    const list = await prisma?.user.findFirst({
+      where: {
+        id: {
+          equals: session.user.userId,
+        },
+      },
+      include: {
+        followers: {
+          include: {
+            follower: true,
           },
         },
-        orderBy: {
-          createdAt: "desc",
-        },
-        include: { followers: true, followings: true },
-      });
-      return users;
-    }),
-  list: protectedProcedure
-    .input(z.object({ userId: z.string() }))
-    .query(async ({ input: { userId } }) => {
-      const list = await prisma?.user.findFirst({
-        where: {
-          id: {
-            equals: userId,
+        followings: {
+          include: {
+            following: true,
           },
         },
-        include: {
-          followers: {
-            include: {
-              follower: true,
-            },
-          },
-          followings: {
-            include: {
-              following: true,
-            },
-          },
-        },
-      });
-      return {
-        followerslist: list?.followers,
-        followinglist: list?.followings,
-      };
-    }),
+      },
+    });
+    return {
+      followerslist: list?.followers,
+      followinglist: list?.followings,
+    };
+  }),
   follow: protectedProcedure
-    .input(z.object({ userId: z.string(), followId: z.string() }))
-    .mutation(async ({ input: { userId, followId } }) => {
-      if (userId !== followId) {
+    .input(z.object({ followId: z.string() }))
+    .mutation(async ({ input: { followId }, ctx: { session } }) => {
+      if (session.user.userId !== followId) {
         await prisma?.follow.create({
           data: {
             followingId: followId,
-            followerId: userId,
+            followerId: session.user.userId,
           },
         });
         return {
@@ -67,14 +63,14 @@ export const userRouter = router({
       }
     }),
   unfollow: protectedProcedure
-    .input(z.object({ userId: z.string(), unFollowId: z.string() }))
-    .mutation(async ({ input: { userId, unFollowId } }) => {
-      if (userId !== unFollowId) {
+    .input(z.object({ unFollowId: z.string() }))
+    .mutation(async ({ input: { unFollowId }, ctx: { session } }) => {
+      if (session.user.userId !== unFollowId) {
         await prisma?.follow.delete({
           where: {
             followingId_followerId: {
               followingId: unFollowId,
-              followerId: userId,
+              followerId: session.user.userId,
             },
           },
         });
