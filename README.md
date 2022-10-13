@@ -15,42 +15,38 @@ PWC Follow App</a>
 
 ## Features
 
-- 👉 User Login and User Follow API
 - 🧙‍♂️ E2E Typesafety with tRPC
 - 🔐 E2E testing with Cypress
 - 🛠 FullStack React with Next.js
 - 📱 Responsive Design with Tailwind
-- 📚 Database with Prisma and PostgreSQL
+- 📚 Database with Prisma 
 - 🚢 Docker It!
 - 💡 Inspired by [Create T3 App](https://create.t3.gg/)
 
-## Setup
-+ Install Dependencies
-```
-yarn install
-```
-+ Setup Backend Enviorment and Start
-```
-// cd packages/backen,create .env file
-DATABASE_URL="postgresql://postgres:postgres@localhost:5432/followapp?schema=public"
-TOKEN_KEY="YOURKEY"
-PORT=8000
+## Local Setup
 
-// start
-1.npm run generate
-2.npm run migrate
-3.npm run pushdb
-4.npm run start
+- Install Dependencies
+
+```
+pnpm install
 ```
 
-+ Run FrontEnd
-```
-yarn dev
-```
-Open http://localhost:3000 
+- Set up
 
-Or you can use docker
-+ Docker
 ```
-docker-compose up --build
+touch .env
+DATABASE_URL = "YOUR_DATABASE_URL"
+// For convenience, I use sqlite
+// if you use other database , you should change schema.prisma file
+datasource db {
+  provider = "sqlite"
+  url      =  env("DATABASE_URL")
+}
+
++ visit http://localhost:3000
+
+## Docker setup
+
++ docker-compose up --build
++ visit http://localhost:3000
 ```
