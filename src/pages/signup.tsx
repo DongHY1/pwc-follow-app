@@ -1,6 +1,5 @@
 import Link from "next/link";
 import { useForm, Controller } from "react-hook-form";
-import { signIn } from "next-auth/react";
 import { ISignUp, signUpSchema } from "../utils/schema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useCallback } from "react";
@@ -16,13 +15,6 @@ const SignUp: NextPage = () => {
       password: "",
     },
     resolver: zodResolver(signUpSchema),
-  });
-  const { data: signData, mutate: signMutate } = trpc.auth.signup.useMutation({
-    onSuccess: () => {
-      console.log("SIGN SUCCESS", signData);
-      reset();
-      router.replace("/login");
-    },
   });
   const { mutateAsync } = trpc.auth.signup.useMutation();
   const onSubmit = useCallback(
