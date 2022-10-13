@@ -11,6 +11,13 @@ PWC Follow App</a>
 </p>
 <br>
 
+## Preview
+
+
+
+https://user-images.githubusercontent.com/73568310/195546371-b4c5a6c2-30af-4d46-99e3-c5be43323699.mp4
+
+
 ## Features
 
 - 🧙‍♂️ E2E Typesafety with tRPC
