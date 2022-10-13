@@ -22,6 +22,12 @@ PWC Follow App</a>
 - 📚 Database with Prisma 
 - 🚢 Docker It!
 - 💡 Inspired by [Create T3 App](https://create.t3.gg/)
+## Use
++ open https://pwcfollow.szuhy.xyz
+
++ click Sign up to create your account 
++ login in your account
++ redirect to profile page , you can follow other accounts
 
 ## Local Setup
 
@@ -44,8 +50,8 @@ datasource db {
 
 + visit http://localhost:3000
 
+```
 ## Docker setup
 
 + docker-compose up --build
 + visit http://localhost:3000
-```
