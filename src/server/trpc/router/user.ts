@@ -1,7 +1,6 @@
 import { router, protectedProcedure } from "../trpc";
 import { z } from "zod";
 import { TRPCError } from "@trpc/server";
-// 下方的UserID需要更换为ctx session内容
 export const userRouter = router({
   all: protectedProcedure.query(async ({ ctx: { session } }) => {
     const users = await prisma?.user.findMany({
