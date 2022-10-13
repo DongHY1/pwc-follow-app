@@ -1,29 +1,11 @@
 import { router, publicProcedure } from "../trpc";
-import { z } from "zod";
 import { TRPCError } from "@trpc/server";
-import bcrypt from "bcrypt";
+import { hash } from "argon2";
+import { signUpSchema } from "../../../utils/schema";
 export const authRouter = router({
-  login: publicProcedure
-    .input(z.object({ email: z.string(), password: z.string() }))
-    .mutation(async ({ input: { email, password } }) => {
-      const user = await prisma?.user.findUnique({
-        where: {
-          email,
-        },
-      });
-      if (!user) throw new Error("Invalid credentials");
-      const doPasswordsMatch = await bcrypt.compare(
-        password,
-        user.hashedpassword
-      );
-      if (!doPasswordsMatch) throw new Error("Invalid credentials");
-      return user.name;
-    }),
   signup: publicProcedure
-    .input(
-      z.object({ name: z.string(), email: z.string(), password: z.string() })
-    )
-    .mutation(async ({ input: { name, email, password } }) => {
+    .input(signUpSchema)
+    .mutation(async ({ input: { username, email, password } }) => {
       const existUser = await prisma?.user.findUnique({
         where: {
           email,
@@ -35,14 +17,18 @@ export const authRouter = router({
           code: "BAD_REQUEST",
         });
       }
-      const hashedpassword = await bcrypt.hash(password, 10);
+      const hashedpassword = await hash(password);
       const user = await prisma?.user.create({
         data: {
-          name,
+          username,
           email,
           hashedpassword,
         },
       });
-      return user;
+      return {
+        status: 201,
+        message: "Account created successfully",
+        result: user,
+      };
     }),
 });

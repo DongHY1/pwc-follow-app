@@ -1,9 +1,11 @@
 import type { NextPage } from "next";
+import { useSession } from "next-auth/react";
 import Head from "next/head";
 import Link from "next/link";
 import List from "./components/List";
 
 const Home: NextPage = () => {
+  const { data } = useSession();
   return (
     <>
       <Head>
@@ -11,6 +13,7 @@ const Home: NextPage = () => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <header>
+        <h1>{JSON.stringify(data)}</h1>
         <div className="mx-auto max-w-4xl py-16 px-14 sm:px-6 lg:px-8">
           <h1 className="bg-gradient-to-br from-purple-400 to-gray-400 bg-clip-text text-center font-sans text-4xl font-bold leading-snug text-transparent md:text-5xl lg:text-8xl">
             PWC FOLLOW APP

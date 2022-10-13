@@ -1,8 +1,9 @@
-import { router, publicProcedure } from "../trpc";
+import { router, protectedProcedure } from "../trpc";
 import { z } from "zod";
 import { TRPCError } from "@trpc/server";
+// 下方的UserID需要更换为ctx session内容
 export const userRouter = router({
-  all: publicProcedure
+  all: protectedProcedure
     .input(z.object({ userId: z.string() }))
     .query(async ({ input: { userId } }) => {
       const users = await prisma?.user.findMany({
@@ -18,7 +19,7 @@ export const userRouter = router({
       });
       return users;
     }),
-  list: publicProcedure
+  list: protectedProcedure
     .input(z.object({ userId: z.string() }))
     .query(async ({ input: { userId } }) => {
       const list = await prisma?.user.findFirst({
@@ -45,7 +46,7 @@ export const userRouter = router({
         followinglist: list?.followings,
       };
     }),
-  follow: publicProcedure
+  follow: protectedProcedure
     .input(z.object({ userId: z.string(), followId: z.string() }))
     .mutation(async ({ input: { userId, followId } }) => {
       if (userId !== followId) {
@@ -65,7 +66,7 @@ export const userRouter = router({
         });
       }
     }),
-  unfollow: publicProcedure
+  unfollow: protectedProcedure
     .input(z.object({ userId: z.string(), unFollowId: z.string() }))
     .mutation(async ({ input: { userId, unFollowId } }) => {
       if (userId !== unFollowId) {
