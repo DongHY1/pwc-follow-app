@@ -19,7 +19,7 @@ const Home: NextPage = () => {
           </h1>
           <div className="max-w-l mx-auto">
             <p className="mt-5 text-center text-xl text-gray-500 lg:text-3xl ">
-              Next.JS + Express + TRPC + Prisma ORM + PostgreSQL
+              Next.JS + TRPC + Prisma ORM + PostgreSQL + TailwindCSS
             </p>
           </div>
           <div className="align-center flex justify-center">
