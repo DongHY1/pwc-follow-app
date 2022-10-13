@@ -2,7 +2,7 @@ import React from 'react';
 
 export default function List({ text }: { text: string }) {
   return (
-    <li className="flex items-center">
+    <li className="flex items-center ">
       <svg
         className="w-4 h-4 mr-1.5 text-green-500 dark:text-green-400 flex-shrink-0"
         fill="currentColor"

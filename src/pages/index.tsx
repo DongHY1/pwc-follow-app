@@ -23,12 +23,12 @@ const Home: NextPage = () => {
             </p>
           </div>
           <div className="align-center flex justify-center">
-            <ul className="mt-10 max-w-md list-inside space-y-1 text-gray-500 dark:text-gray-400">
-              <List text="👉 User Login and User Follow API" />
+            <ul className="mt-10 max-w-6xl list-inside space-y-1 text-gray-500 dark:text-gray-400">
+              <List text="👉 User Login and Follow API" />
               <List text="🧙‍♂️ E2E Typesafety with tRPC" />
               <List text="🔐 E2E testing with Cypress" />
               <List text="🛠 FullStack React with Next.js " />
-              <List text="📱 Responsive Design with Tailwind " />
+              <List text="📱 Responsive Design Tailwind " />
               <List text="📚 Database with Prisma" />
               <List text="🚢 Docker It !" />
             </ul>
