@@ -6,6 +6,7 @@ import { useCallback } from "react";
 import { NextPage } from "next";
 import { useRouter } from "next/router";
 import { trpc } from "../utils/trpc";
+import toast, { Toaster } from "react-hot-toast";
 const SignUp: NextPage = () => {
   const router = useRouter();
   const { handleSubmit, control, reset } = useForm<ISignUp>({
@@ -24,6 +25,9 @@ const SignUp: NextPage = () => {
         if (result.status === 201) {
           reset();
           router.push("/login");
+          toast.success("Success signin!", {
+            icon: "👏",
+          });
         }
       } catch (err) {
         console.error(err);
@@ -114,6 +118,7 @@ const SignUp: NextPage = () => {
                 </Link>
               </p>
             </form>
+            <Toaster />
           </div>
         </div>
       </div>

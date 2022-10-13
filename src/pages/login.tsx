@@ -5,6 +5,7 @@ import { signIn } from "next-auth/react";
 import { loginSchema, ILogin } from "../utils/schema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { NextPage } from "next";
+import toast, { Toaster } from "react-hot-toast";
 const Login: NextPage = () => {
   const { handleSubmit, control, reset } = useForm<ILogin>({
     defaultValues: {
@@ -18,7 +19,13 @@ const Login: NextPage = () => {
       try {
         await signIn("credentials", { ...data, callbackUrl: "/profile" });
         reset();
+        toast.success("Success login!", {
+          icon: "🎉",
+        });
       } catch (err) {
+        toast.error("Network Error", {
+          icon: "😮‍💨",
+        });
         console.error(err);
       }
     },
@@ -89,6 +96,7 @@ const Login: NextPage = () => {
                 </Link>
               </p>
             </form>
+            <Toaster />
           </div>
         </div>
       </div>
