@@ -13,7 +13,6 @@ const Home: NextPage = () => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <header>
-        <h1>{JSON.stringify(data)}</h1>
         <div className="mx-auto max-w-4xl py-16 px-14 sm:px-6 lg:px-8">
           <h1 className="bg-gradient-to-br from-purple-400 to-gray-400 bg-clip-text text-center font-sans text-4xl font-bold leading-snug text-transparent md:text-5xl lg:text-8xl">
             PWC FOLLOW APP
@@ -43,17 +42,19 @@ const Home: NextPage = () => {
               GitHub
             </a>
             <span className="mx-2">or</span>
-
-            <Link href="/signup" passHref>
-              <button className="rounded border py-2 px-4 font-sans font-medium ">
-                Sign up
-              </button>
-            </Link>
-            <Link href="/profile" passHref>
-              <button className="rounded border py-2 px-4 font-sans font-medium ">
-                Profile
-              </button>
-            </Link>
+            {!data ? (
+              <Link href="/signup" passHref>
+                <button className="rounded border py-2 px-4 font-sans font-medium ">
+                  Sign up
+                </button>
+              </Link>
+            ) : (
+              <Link href="/profile" passHref>
+                <button className="rounded border py-2 px-4 font-sans font-medium ">
+                  Profile
+                </button>
+              </Link>
+            )}
           </div>
         </div>
       </header>

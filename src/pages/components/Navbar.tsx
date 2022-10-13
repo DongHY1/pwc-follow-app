@@ -1,7 +1,9 @@
 import React, { useState } from "react";
 import Link from "next/link";
+import { signOut, useSession } from "next-auth/react";
 const Navbar = () => {
   const [isHidden, setIsHidden] = useState(true);
+  const { data } = useSession();
   return (
     <nav className="rounded border-gray-200 bg-white px-2 py-2.5 dark:bg-gray-900 sm:px-4">
       <div className="container mx-auto flex flex-wrap items-center justify-between">
@@ -41,37 +43,41 @@ const Navbar = () => {
         >
           <ul className="mt-4 flex flex-col rounded-lg border border-gray-100 bg-gray-50 p-4 dark:border-gray-700 dark:bg-gray-800 md:mt-0 md:flex-row md:space-x-8 md:border-0 md:bg-white md:text-sm md:font-medium md:dark:bg-gray-900">
             <>
-              <li>
-                <Link href="/signup" passHref>
-                  <button className="block rounded py-2 pr-4 pl-3 text-lg text-gray-700 hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-700  dark:hover:text-white md:border-0 md:p-0 md:hover:bg-transparent md:dark:hover:bg-transparent md:dark:hover:text-white">
-                    Sign Up
-                  </button>
-                </Link>
-              </li>
-              <li>
-                <Link href="/login" passHref>
-                  <button className="block rounded py-2 pr-4 pl-3 text-lg text-gray-700 hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-700  dark:hover:text-white md:border-0 md:p-0 md:hover:bg-transparent md:dark:hover:bg-transparent md:dark:hover:text-white">
-                    Log In
-                  </button>
-                </Link>
-              </li>
+              {!data ? (
+                <>
+                  <li>
+                    <Link href="/signup" passHref>
+                      <button className="block rounded py-2 pr-4 pl-3 text-lg text-gray-700 hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-700  dark:hover:text-white md:border-0 md:p-0 md:hover:bg-transparent md:dark:hover:bg-transparent md:dark:hover:text-white">
+                        Sign Up
+                      </button>
+                    </Link>
+                  </li>
+                  <li>
+                    <Link href="/login" passHref>
+                      <button className="block rounded py-2 pr-4 pl-3 text-lg text-gray-700 hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-700  dark:hover:text-white md:border-0 md:p-0 md:hover:bg-transparent md:dark:hover:bg-transparent md:dark:hover:text-white">
+                        Log In
+                      </button>
+                    </Link>
+                  </li>
+                </>
+              ) : (
+                <>
+                  <li>
+                    <button className="block rounded py-2 pr-4 pl-3 text-lg text-gray-700 hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-700  dark:hover:text-white md:border-0 md:p-0 md:hover:bg-transparent md:dark:hover:bg-transparent md:dark:hover:text-white">
+                      {data.user.username}
+                    </button>
+                  </li>
+                  <li>
+                    <button
+                      onClick={() => signOut({ callbackUrl: "/" })}
+                      className="block rounded py-2 pr-4 pl-3 text-lg text-gray-700 hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-700  dark:hover:text-white md:border-0 md:p-0 md:hover:bg-transparent md:dark:hover:bg-transparent md:dark:hover:text-white"
+                    >
+                      Log out
+                    </button>
+                  </li>
+                </>
+              )}
             </>
-
-            {/* <>
-              <li>
-                <p className="block rounded py-2 pr-4 pl-3 text-lg text-gray-700 hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-700  dark:hover:text-white md:border-0 md:p-0 md:hover:bg-transparent md:dark:hover:bg-transparent md:dark:hover:text-white">
-                  测试
-                </p>
-              </li>
-              <li>
-                <button
-                  // onClick={logout}
-                  className="block rounded py-2 pr-4 pl-3 text-lg text-gray-700 hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-700  dark:hover:text-white md:border-0 md:p-0 md:hover:bg-transparent md:dark:hover:bg-transparent md:dark:hover:text-white"
-                >
-                  Log out
-                </button>
-              </li>
-            </> */}
           </ul>
         </div>
       </div>
