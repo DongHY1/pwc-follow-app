@@ -36,8 +36,7 @@ pnpm install
 ```
 touch .env
 DATABASE_URL = "YOUR_DATABASE_URL"
-// For convenience, I use sqlite
-// if you use other database , you should change schema.prisma file
+// if you use other database , you should change schema.prisma file,such as
 datasource db {
   provider = "sqlite"
   url      =  env("DATABASE_URL")
