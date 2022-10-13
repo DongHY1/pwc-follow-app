@@ -55,7 +55,7 @@ datasource db {
   url      =  env("DATABASE_URL")
 }
 
-+ visit http://localhost:3000
+visit http://localhost:3000
 
 ```
 
