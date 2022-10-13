@@ -36,6 +36,7 @@ const Home: NextPage = () => {
 
           <div className="mx-auto mt-20 flex w-full items-center justify-center">
             <a
+              id='github'
               href="https://github.com/DongHY1/pwc-follow-app"
               className="rounded border border-indigo-500 bg-indigo-600 py-2 px-4 font-sans font-medium text-white hover:bg-indigo-700"
             >
